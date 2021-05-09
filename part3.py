@@ -56,42 +56,41 @@ print(df_opt1.groupby(['Item_Type'])[['Item_MRP']].mean().sort_values(by=['Item_
 
 # Data Visualization
 
-# mrp_mean = df_opt1.groupby(['Item_Type'])['Item_MRP'].mean().round(2).sort_values()
 
-# mrp_mean_values = list(mrp_mean.values)
-# mrp_mean_index = list(mrp_mean.index)
+#showing the avergae MRP of types of items as a bar graph so easily see which is the highest and lowest
+mrp_mean = df_opt1.groupby(['Item_Type'])['Item_MRP'].mean().round(2).sort_values()
 
-# print(mrp_mean_values)
-# print(mrp_mean_index)
+mrp_mean_values = list(mrp_mean.values)
+mrp_mean_index = list(mrp_mean.index)
 
-# plt.rcParams['figure.figsize'] = 10,5
-# plt.bar(mrp_mean.index,mrp_mean.values)
-# plt.xticks(rotation = 'vertical')
-# plt.title('Average MRP of Item Types')
-# plt.ylabel('Dollars')
-# plt.xlabel('Item Types')
-# plt.tight_layout()
-# plt.show()
+plt.rcParams['figure.figsize'] = 10,5
+plt.bar(mrp_mean.index,mrp_mean.values)
+plt.xticks(rotation = 'vertical')
+plt.title('Average MRP of Item Types')
+plt.ylabel('Dollars')
+plt.xlabel('Item Types')
+plt.tight_layout()
+plt.show()
 
+# displaying MRP and Outlet type sales. Was hoping to show that stores with higher MRP would result in higher sales but those numbers did not correlate all that much and that can be seen in the graphs.
 outlet_sales = df_opt1.groupby(['Outlet_Identifier'])['Item_Outlet_Sales'].mean().sort_values()
-outlet_item_mrp = df_opt1.groupby(['Outlet_Identifier'])['Item_MRP'].mean().round(2)
-combo = pd.concat([outlet_sales, outlet_item_mrp], axis = 1)
+outlet_item_mrp = df_opt1.groupby(['Outlet_Identifier'])['Item_MRP'].mean()
+combo = pd.concat([outlet_sales, outlet_item_mrp], axis = 1) #combined data frames so that I could plot mrp and outlet sales and have them both be associated with the correct outlet type
 outlet_sales = combo['Item_Outlet_Sales']
-outlet_item_mrp2 = combo['Item_MRP']
-print(outlet_sales, outlet_item_mrp)
+outlet_item_mrp = combo['Item_MRP']
+# print(outlet_sales, outlet_item_mrp)
 outlet_ids = list(outlet_sales.index)
 outlet_sales = list(outlet_sales.values)
-outlet_item_mrp = list(outlet_item_mrp2.values)
-print(outlet_item_mrp)
+outlet_item_mrp = list(outlet_item_mrp.values)
+# print(outlet_item_mrp)
 test = np.arange(8)
 w = .3
-# print(plt.patch)
+
 plt.rcParams['figure.figsize'] = 10,5
 plt.bar(test, outlet_sales, align = 'center', width = w, label = 'Outlet Sales', color = 'b')
 plt.xticks(np.arange(8), outlet_ids)
 plt.ylabel('Outlet Sales in Dollars')
 plt.xlabel('Outlet Types')
-# plt.bar_label(outlet_item_mrp, padding = 3)
 plt.legend(loc=(1.04, 0.06))
 plt.tight_layout()
 #second Y axis
@@ -99,11 +98,7 @@ plt.twinx()
 plt.bar(test + w, outlet_item_mrp, align = 'center', width = w, color = 'r', label = 'MRP')
 plt.title('Average Outlet Sales and MRP')
 plt.ylabel('MRP in Dollars')
-for i in range(0,len(outlet_item_mrp2),1): # will want to use this to laebl things on a bar graph at somepoint in the future
-    # print(str(i), str(outlet_item_mrp2[i]))
-    plt.annotate(str(outlet_item_mrp2[i]), xy=(i + w,outlet_item_mrp2[i]), ha= 'center', va = 'bottom')
 plt.legend(loc=(1.04,0))
 plt.tight_layout()
 
 plt.show()
-
