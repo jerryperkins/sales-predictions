@@ -63,14 +63,14 @@ mrp_mean = df_opt1.groupby(['Item_Type'])['Item_MRP'].mean().round(2).sort_value
 mrp_mean_values = list(mrp_mean.values)
 mrp_mean_index = list(mrp_mean.index)
 
-# plt.rcParams['figure.figsize'] = 10,5
-# plt.bar(mrp_mean.index,mrp_mean.values)
-# plt.xticks(rotation = 'vertical')
-# plt.title('Average MRP of Item Types')
-# plt.ylabel('Dollars')
-# plt.xlabel('Item Types')
-# plt.tight_layout()
-# plt.show()
+plt.rcParams['figure.figsize'] = 10,5
+plt.bar(mrp_mean.index,mrp_mean.values)
+plt.xticks(rotation = 'vertical')
+plt.title('Average MRP of Item Types')
+plt.ylabel('Dollars')
+plt.xlabel('Item Types')
+plt.tight_layout()
+plt.show()
 
 # displaying MRP and Outlet type sales. Was hoping to show that stores with higher MRP would result in higher sales but those numbers did not correlate all that much and that can be seen in the graphs.
 outlet_sales = df_opt1.groupby(['Outlet_Identifier'])['Item_Outlet_Sales'].mean().sort_values()
@@ -93,7 +93,7 @@ plt.ylabel('Outlet Sales in Dollars')
 plt.xlabel('Outlet Types')
 plt.legend(loc=(1.04, 0.06))
 plt.tight_layout()
-# second Y axis
+#second Y axis
 plt.twinx()
 plt.bar(test + w, outlet_item_mrp, align = 'center', width = w, color = 'r', label = 'MRP')
 plt.title('Average Outlet Sales and MRP')
@@ -104,5 +104,62 @@ plt.tight_layout()
 plt.show()
 
 
+# Here is where Part4 begins
+
+df_opt1['Item_Visibility'].hist() # Over half of the items have less than 10% visibility
+plt.xlabel('Visibility')
+
+visibility_avg = df_opt1.groupby(['Item_Type'])['Item_Visibility'].mean().sort_values() # the second lowest MRP item group has the highest visibility percentage by almost 30%...ouch
+plt.bar(visibility_avg.index, visibility_avg.values)
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+#Boxplots for item mrp dist of each item type
+item_types = df_opt1['Item_Type'].value_counts().index
+index_list = []
+plt.rcParams['figure.figsize'] = 10,5
+for index, value in enumerate(item_types):
+    item_type = df_opt1[df_opt1['Item_Type']==value]
+    # print(len(item_type))
+    # print(len(item_type['Item_MRP']))
+    # print(np.arange(len(item_type['Item_MRP'])))
+    plt.boxplot(item_type['Item_MRP'],
+                positions=[index],
+                widths=.6,
+                medianprops=dict(linestyle='-', linewidth=2, color='green'),
+                notch=True,
+                showmeans=True,
+                meanprops =dict(marker='X', markeredgecolor='black', markerfacecolor='r'))
+    # item_type['Item_MRP'].hist(color='r', alpha=.5)
+    index_list.append(value)
+plt.xticks(range(0,len(item_types)) , item_types, rotation=45, ha='right') #the idea for using range came from here: https://stackoverflow.com/questions/58814857/conversionerror-failed-to-convert-values-to-axis-units
+plt.title("Item MRP distribution Per Item Type")
+plt.ylabel('Item MRP')
+plt.tight_layout()
+plt.show()
+
+# Boxplots for item visibility distribution for each item type
+item_types = df_opt1['Item_Type'].value_counts().index
+index_list = []
+plt.rcParams['figure.figsize'] = 10,5
+for index, value in enumerate(item_types):
+    item_type = df_opt1[df_opt1['Item_Type']==value]
+    # print(len(item_type))
+    # print(len(item_type['Item_MRP']))
+    # print(np.arange(len(item_type['Item_MRP'])))
+    plt.boxplot(item_type['Item_Visibility'],
+                positions=[index],
+                widths=.6,
+                medianprops=dict(linestyle='-', linewidth=2, color='green'),
+                notch=True,
+                showmeans=True,
+                meanprops =dict(marker='X', markeredgecolor='black', markerfacecolor='r'))
+    # item_type['Item_MRP'].hist(color='r', alpha=.5)
+plt.xticks(range(0,len(item_types)) , item_types, rotation=45, ha='right') #the idea for using range came from here: https://stackoverflow.com/questions/58814857/conversionerror-failed-to-convert-values-to-axis-units
+plt.title("Item Visibility distribution Per Item Type")
+plt.ylabel('Item Visibility')
+plt.tight_layout()
+plt.show()
 
 
