@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.neighbors import KNeighborsRegressor
@@ -75,7 +74,7 @@ plt.title('Average MRP of Item Types')
 plt.ylabel('Dollars')
 plt.xlabel('Item Types')
 plt.tight_layout()
-# plt.show()
+plt.show()
 
 # displaying MRP and Outlet type sales. Was hoping to show that stores with higher MRP would result in higher sales but those numbers did not correlate all that much and that can be seen in the graphs.
 outlet_sales = df_opt1.groupby(['Outlet_Identifier'])['Item_Outlet_Sales'].mean().sort_values()
@@ -106,21 +105,21 @@ plt.ylabel('MRP in Dollars')
 plt.legend(loc=(1.04,0))
 plt.tight_layout()
 
-# plt.show()
+plt.show()
 
 
 # Here is where Part4 begins
 
 df_opt1['Item_Visibility'].hist() # Over half of the items have less than 10% visibility
 plt.xlabel('Visibility')
-# plt.show()
+plt.show()
 
 visibility_avg = df_opt1.groupby(['Item_Type'])['Item_Visibility'].mean().sort_values() # the second lowest MRP item group has the highest visibility percentage by almost 30%...ouch
 plt.bar(visibility_avg.index, visibility_avg.values)
 plt.xticks(rotation=45, ha='right')
-plt.title('Average Visibility per Item')
+plt.title('Avg Visibility Per Item Type')
 plt.tight_layout()
-# plt.show()
+plt.show()
 
 #Boxplots for item mrp dist of each item type
 item_types = df_opt1['Item_Type'].value_counts().index
@@ -144,7 +143,7 @@ plt.xticks(range(0,len(item_types)) , item_types, rotation=45, ha='right') #the 
 plt.title("Item MRP distribution Per Item Type")
 plt.ylabel('Item MRP')
 plt.tight_layout()
-# plt.show()
+plt.show()
 
 # Boxplots for item visibility distribution for each item type
 item_types = df_opt1['Item_Type'].value_counts().index
@@ -167,13 +166,10 @@ plt.xticks(range(0,len(item_types)) , item_types, rotation=45, ha='right') #the 
 plt.title("Item Visibility distribution Per Item Type")
 plt.ylabel('Item Visibility')
 plt.tight_layout()
-# plt.show()
-
-print(df_opt1.head())
-
-print(df_opt1['Outlet_Identifier'].value_counts())
+plt.show()
 
 
+#PART 5 STARTS HERE
 #Regression without fat content or item type
 
 
